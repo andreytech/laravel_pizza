@@ -2,14 +2,24 @@
 
 namespace App\Utilities;
 
-interface Oven
+abstract class Oven
 {
+    const STATUS_OFF = 'off';
+    const STATUS_HEATED = 'heated';
+
+    protected $status = '';
+
+    public function __construct()
+    {
+        $this->status = self::STATUS_OFF;
+    }
+
     /**
      * Just echo time to heat up
      *
      * @return self
      */
-    public function heatUp(): self;
+    abstract public function heatUp(): self;
 
     /**
      * Calculate and echo time to cook
@@ -19,12 +29,17 @@ interface Oven
      * @param Pizza $pizza
      * @return self
      */
-    public function bake(Pizza &$pizza): self;
+    abstract public function bake(Pizza &$pizza): self;
 
     /**
      * Just echo 'oven is off'
      *
      * @return self
      */
-    public function turnOff(): self;
+    abstract public function turnOff(): self;
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
 }

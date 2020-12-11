@@ -32,14 +32,26 @@ class Pizza
         $this->status = self::STATUS_RAW;
     }
 
-    // TODO: implement function. Update pizza status to be partly eaten or all eaten
     /**
      * @throws BadFunctionCallException if no slices left to eat
      * @throws BadFunctionCallException if trying to eat a raw pizza
      */
     public function eatSlice(): void
     {
+        if($this->status === self::STATUS_RAW) {
+            throw new BadFunctionCallException("Can not eat raw pizza");
+        }
+        if($this->slicesRemaining === 0) {
+            throw new BadFunctionCallException("No slices left to eat");
+        }
 
+        $this->slicesRemaining--;
+
+        if($this->slicesRemaining === 0) {
+            $this->status = self::STATUS_ALL_EATEN;
+        }else {
+            $this->status = self::STATUS_PARTLY_EATEN;
+        }
     }
 
     public function getSlicesRemaining(): int

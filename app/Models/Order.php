@@ -26,7 +26,7 @@ class Order extends Model
     const STATUS_DELIVERED = 'delivered';
     const STATUS_CANCELLED = 'cancelled';
     const STATUSES = [
-        self::STATUS_PREPARING,
+        self::STATUS_PENDING,
         self::STATUS_PREPARING,
         self::STATUS_COOKING,
         self::STATUS_READY,
@@ -51,9 +51,13 @@ class Order extends Model
         );
     }
 
-    // todo create this function (returns order price)
     public function getPriceAttribute(): float
     {
-
+        return $this->recipes->reduce(
+            function ($sum, Recipe $recipe) {
+                return $sum + $recipe->price;
+            },
+            0
+        );
     }
 }
